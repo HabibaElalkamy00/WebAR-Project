@@ -28,11 +28,6 @@
     </style>
   </head>
   <body>
-<<<<<<< HEAD
-    <a-scene mindar-image="imageTargetSrc: ./assets/targets (1).mind;" 
-             vr-mode-ui="enabled: false" 
-             device-orientation-permission-ui="enabled: false">
-=======
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -55,30 +50,29 @@
         </ul>
       </div>
     </nav>
->>>>>>> 85ae790 (Nav)
       
     <div class="container">
       <h3>Right Aligned Navbar</h3>
       <p>The .navbar-right class is used to right-align navigation bar buttons.</p>
     </div>
 
-    <!-- زر بدء الـ AR -->
+    <!-- AR Start Button -->
     <button id="startButton">Start AR</button>
 
     <script>
       const startButton = document.querySelector("#startButton");
 
       startButton.addEventListener("click", () => {
-        // إخفاء الزر بعد الضغط عليه
+        // Hide the button after it is clicked
         startButton.style.display = "none";
 
-        // إنشاء المشهد ديناميكيًا
+        // Dynamically create the scene
         const scene = document.createElement("a-scene");
         scene.setAttribute("mindar-image", "imageTargetSrc: /assets/targets (1).mind;");
         scene.setAttribute("vr-mode-ui", "enabled: false");
         scene.setAttribute("device-orientation-permission-ui", "enabled: false");
 
-        // إضافة الـ <a-assets> مع الفيديو
+        // Add the <a-assets> with the video
         const assets = document.createElement("a-assets");
         const video = document.createElement("video");
         video.setAttribute("id", "myVideo");
@@ -90,13 +84,13 @@
         assets.appendChild(video);
         scene.appendChild(assets);
 
-        // إضافة الكاميرا
+        // Add the camera
         const camera = document.createElement("a-camera");
         camera.setAttribute("position", "0 0 0");
         camera.setAttribute("look-controls", "enabled: false");
         scene.appendChild(camera);
 
-        // إضافة الفيديو كعنصر AR
+        // Add the video as an AR entity
         const targetEntity = document.createElement("a-entity");
         targetEntity.setAttribute("mindar-image-target", "targetIndex: 0");
 
@@ -110,21 +104,21 @@
         targetEntity.appendChild(videoEntity);
         scene.appendChild(targetEntity);
 
-        // إضافة المشهد إلى الصفحة
+        // Append the scene to the body
         document.body.appendChild(scene);
 
-        // تشغيل الفيديو عند العثور على الهدف
+        // Play video when target is found
         scene.addEventListener("arReady", () => {
-          console.log("AR جاهز");
+          console.log("AR is ready");
         });
 
         targetEntity.addEventListener("targetFound", () => {
-          console.log("تم العثور على الهدف، تشغيل الفيديو");
-          video.play().catch(e => console.log("خطأ في تشغيل الفيديو:", e));
+          console.log("Target found, playing video");
+          video.play().catch(e => console.log("Error playing video:", e));
         });
 
         targetEntity.addEventListener("targetLost", () => {
-          console.log("فُقد الهدف، إيقاف الفيديو");
+          console.log("Target lost, pausing video");
           video.pause();
         });
       });

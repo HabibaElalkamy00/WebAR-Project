@@ -3,43 +3,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+      body {
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+      #startButton {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 15px 30px;
+        font-size: 18px;
+        background: blue;
+        color: white;
+        border: none;
+        cursor: pointer;
+        z-index: 10;
+      }
+    </style>
   </head>
   <body>
-    <a-scene mindar-image="imageTargetSrc: /assets/targets (1).mind;" 
-             vr-mode-ui="enabled: false" 
-             device-orientation-permission-ui="enabled: false">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">WebSiteName</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Page 1-1</a></li>
+              <li><a href="#">Page 1-2</a></li>
+              <li><a href="#">Page 1-3</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Page 2</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+      </div>
+    </nav>
       
-      <!-- Video Asset -->
-      <a-assets>
-        <video id="myVideo" src="Lady Gaga, Bruno Mars - Die With A Smile (Official Music Video) (1).mp4" preload="auto" playsinline webkit-playsinline loop></video>
-      </a-assets>
+    <div class="container">
+      <h3>Right Aligned Navbar</h3>
+      <p>The .navbar-right class is used to right-align navigation bar buttons.</p>
+    </div>
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-      <!-- Video Display -->
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-video id="videoEntity" src="#myVideo" position="0 0 0" width="1" height="0.552" rotation="0 0 0"></a-video>
-      </a-entity>
-
-    </a-scene>
+    <!-- زر بدء الـ AR -->
+    <button id="startButton">Start AR</button>
 
     <script>
-      const video = document.querySelector("#myVideo");
-      const videoEntity = document.querySelector("#videoEntity");
+      const startButton = document.querySelector("#startButton");
 
-      // Start video when image target is found
-      document.querySelector("a-scene").addEventListener("arReady", () => {
-        console.log("AR is ready");
-      });
+      startButton.addEventListener("click", () => {
+        // إخفاء الزر بعد الضغط عليه
+        startButton.style.display = "none";
 
-      document.querySelector("[mindar-image-target]").addEventListener("targetFound", () => {
-        console.log("Image target found, playing video");
-        video.play().catch(e => console.log("Video playback error:", e));
-      });
+        // إنشاء المشهد ديناميكيًا
+        const scene = document.createElement("a-scene");
+        scene.setAttribute("mindar-image", "imageTargetSrc: /assets/targets (1).mind;");
+        scene.setAttribute("vr-mode-ui", "enabled: false");
+        scene.setAttribute("device-orientation-permission-ui", "enabled: false");
 
-      document.querySelector("[mindar-image-target]").addEventListener("targetLost", () => {
-        console.log("Image target lost, pausing video");
-        video.pause();
+        // إضافة الـ <a-assets> مع الفيديو
+        const assets = document.createElement("a-assets");
+        const video = document.createElement("video");
+        video.setAttribute("id", "myVideo");
+        video.setAttribute("src", "Lady Gaga, Bruno Mars - Die With A Smile (Official Music Video) (1).mp4");
+        video.setAttribute("preload", "auto");
+        video.setAttribute("playsinline", "");
+        video.setAttribute("webkit-playsinline", "");
+        video.setAttribute("loop", "");
+        assets.appendChild(video);
+        scene.appendChild(assets);
+
+        // إضافة الكاميرا
+        const camera = document.createElement("a-camera");
+        camera.setAttribute("position", "0 0 0");
+        camera.setAttribute("look-controls", "enabled: false");
+        scene.appendChild(camera);
+
+        // إضافة الفيديو كعنصر AR
+        const targetEntity = document.createElement("a-entity");
+        targetEntity.setAttribute("mindar-image-target", "targetIndex: 0");
+
+        const videoEntity = document.createElement("a-video");
+        videoEntity.setAttribute("id", "videoEntity");
+        videoEntity.setAttribute("src", "#myVideo");
+        videoEntity.setAttribute("position", "0 0 0");
+        videoEntity.setAttribute("width", "1");
+        videoEntity.setAttribute("height", "0.552");
+
+        targetEntity.appendChild(videoEntity);
+        scene.appendChild(targetEntity);
+
+        // إضافة المشهد إلى الصفحة
+        document.body.appendChild(scene);
+
+        // تشغيل الفيديو عند العثور على الهدف
+        scene.addEventListener("arReady", () => {
+          console.log("AR جاهز");
+        });
+
+        targetEntity.addEventListener("targetFound", () => {
+          console.log("تم العثور على الهدف، تشغيل الفيديو");
+          video.play().catch(e => console.log("خطأ في تشغيل الفيديو:", e));
+        });
+
+        targetEntity.addEventListener("targetLost", () => {
+          console.log("فُقد الهدف، إيقاف الفيديو");
+          video.pause();
+        });
       });
     </script>
   </body>

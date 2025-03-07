@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  </head>
+  <body>
+    <a-scene mindar-image="imageTargetSrc: /assets/targets (1).mind;" 
+             vr-mode-ui="enabled: false" 
+             device-orientation-permission-ui="enabled: false">
+      
+      <!-- Video Asset -->
+      <a-assets>
+        <video id="myVideo" src="Lady Gaga, Bruno Mars - Die With A Smile (Official Music Video) (1).mp4" preload="auto" playsinline webkit-playsinline loop></video>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <!-- Video Display -->
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-video id="videoEntity" src="#myVideo" position="0 0 0" width="1" height="0.552" rotation="0 0 0"></a-video>
+      </a-entity>
+
+    </a-scene>
+
+    <script>
+      const video = document.querySelector("#myVideo");
+      const videoEntity = document.querySelector("#videoEntity");
+
+      // Start video when image target is found
+      document.querySelector("a-scene").addEventListener("arReady", () => {
+        console.log("AR is ready");
+      });
+
+      document.querySelector("[mindar-image-target]").addEventListener("targetFound", () => {
+        console.log("Image target found, playing video");
+        video.play().catch(e => console.log("Video playback error:", e));
+      });
+
+      document.querySelector("[mindar-image-target]").addEventListener("targetLost", () => {
+        console.log("Image target lost, pausing video");
+        video.pause();
+      });
+    </script>
+  </body>
+</html>

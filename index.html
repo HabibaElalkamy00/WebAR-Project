@@ -16,10 +16,6 @@
         padding: 0;
       }
       #startButton {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
         padding: 15px 30px;
         font-size: 18px;
         background: blue;
@@ -68,9 +64,42 @@
         </div>
       </div>
     </nav>
+
+    <div class="card-group" style="padding-bottom: 100px;">
+      <div class="card">
+        <img src="lc300-hero (1).jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Last updated 3 mins ago</small>
+        </div>
+      </div>
+      <div class="card">
+        <img src="lc300-hero (1).jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Last updated 3 mins ago</small>
+        </div>
+      </div>
+      <div class="card">
+        <img src="lc300-hero (1).jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Last updated 3 mins ago</small>
+        </div>
+      </div>
+    </div>
     
     <!-- AR Start Button -->
-    <button id="startButton">Start AR</button>
+    <button id="startButton" onclick="window.location.href='ar.html'">Start AR</button>
 
     <script>
       const startButton = document.querySelector("#startButton");
